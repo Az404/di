@@ -4,6 +4,7 @@ using TagsCloudVisualization.Preprocessors.WordDictionaries;
 
 namespace TagsCloudVisualization.Preprocessors
 {
+    // CR: Don't commit such names into the repo
     public class BoringWordsRemover : IWordPreprocessor
     {
         public int Priority { get; } = 10;

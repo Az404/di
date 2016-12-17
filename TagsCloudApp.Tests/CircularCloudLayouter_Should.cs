@@ -26,6 +26,7 @@ namespace TagsCloudVisualizationTests
         [TearDown]
         public void TearDown()
         {
+            // Nit: Follow resharper advice
             if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Failed)
             {
                 var filename =
@@ -34,8 +35,9 @@ namespace TagsCloudVisualizationTests
                 var size = rectangles.GetBoundingRectangleSize();
                 var offset = new Size(size.Width / 2, size.Height / 2);
                 var shiftedRectangles = rectangles.Select(rect => rect.Shift(offset)).ToArray();
-                using (var bitmap = CloudVizualizer.DrawRectangles(shiftedRectangles, size, Color.Red))
-                    bitmap.Save(filename);
+                // CR: Wtf, it doesn't compile
+                //using (var bitmap = CloudVizualizer.DrawRectangles(shiftedRectangles, size, Color.Red))
+                //    bitmap.Save(filename);
                 TestContext.WriteLine($"Tag cloud visualization saved to file {filename}");
             }
         }

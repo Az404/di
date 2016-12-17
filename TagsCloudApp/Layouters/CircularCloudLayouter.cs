@@ -8,6 +8,7 @@ namespace TagsCloudVisualization.Layouters
 {
     public class CircularCloudLayouter : IRectangleLayouter
     {
+        // CR: Consts - not configurable
         private const double AngleStep = Math.PI/32;
         private const double CompactionTolerance = 1;
 

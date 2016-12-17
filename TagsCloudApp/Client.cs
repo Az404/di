@@ -18,6 +18,8 @@ namespace TagsCloudVisualization
         private readonly IWordsLayouter layouter;
         private readonly IImageRenderer renderer;
 
+        // CR: This can certainly be reduced, you can nest dependencies
+        // For example, settings can be injected in the renderer
         public Client(IDataSource source, IWordPreprocessor[] preprocessors, IWordsLayouter layouter, IImageRenderer renderer, ImageSettings imageSettings, FontSettings fontSettings)
         {
             this.layouter = layouter;

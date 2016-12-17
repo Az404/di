@@ -15,16 +15,18 @@ namespace TagsCloudVisualization
 {
     internal class Program
     {
+        // CR: Should not be part of the program class
         private const int Width = 2000;
         private const int Height = 1000;
-
-        private static readonly Point Center = new Point(Width/2, Height/2);
+        // CR: Same
+        private static readonly Point Center = new Point(Width / 2, Height / 2);
 
         private static void Main(string[] args)
         {
             var appOptions = ProcessArgs(args);
             var assembly = Assembly.GetAssembly(typeof(Program));
 
+            // CR: At least wrap in function
             var builder = new ContainerBuilder();
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces();
             builder.RegisterInstance(appOptions).AsSelf();
@@ -39,6 +41,7 @@ namespace TagsCloudVisualization
             container.Resolve<IUserInterface>().Run();
         }
 
+        // CR: This function build parser AND executes it, bad pattern
         private static AppOptions ProcessArgs(string[] args)
         {
             var commandLineParser = new FluentCommandLineParser<AppOptions>();
@@ -55,6 +58,7 @@ namespace TagsCloudVisualization
                 .Required()
                 .WithDescription("Path to output image");
 
+            // CR: This can be extracted to a field
             var usage = $"Usage: {AppDomain.CurrentDomain.FriendlyName} [ -h | -help ] -t tags-file -i image-file";
 
             commandLineParser
