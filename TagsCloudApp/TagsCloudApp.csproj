@@ -48,12 +48,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppOptions.cs" />
-    <Compile Include="Client.cs" />
+    <Compile Include="Measurers\WordCounter.cs" />
+    <Compile Include="Measurers\IWordsMeasurer.cs" />
+    <Compile Include="OutputDrawer.cs" />
+    <Compile Include="ITags.cs" />
+    <Compile Include="Renderers\RectanglesRenderer.cs" />
     <Compile Include="Settings\FontSettings.cs" />
-    <Compile Include="IClient.cs" />
+    <Compile Include="IOutputDrawer.cs" />
     <Compile Include="Renderers\TagsRenderer.cs" />
     <Compile Include="Layouters\IWordsLayouter.cs" />
-    <Compile Include="Preprocessors\BoringWordsRemover.cs" />
+    <Compile Include="Preprocessors\WordPartsFilter.cs" />
     <Compile Include="Layouters\CircularCloudLayouter.cs" />
     <Compile Include="Geometry\PointExtensions.cs" />
     <Compile Include="Layouters\IRectangleLayouter.cs" />
@@ -62,17 +66,18 @@
     <Compile Include="Settings\ImageSettings.cs" />
     <Compile Include="Preprocessors\IWordPreprocessor.cs" />
     <Compile Include="Settings\Palette.cs" />
-    <Compile Include="Preprocessors\WordDictionaries\IWordDictionary.cs" />
+    <Compile Include="Tags.cs" />
+    <Compile Include="MeasuredWord.cs" />
+    <Compile Include="WordDictionaries\IWordDictionary.cs" />
     <Compile Include="Preprocessors\LowerCasePreprocessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Geometry\RectangleExtensions.cs" />
-    <Compile Include="Preprocessors\WordDictionaries\SimpleDictionary.cs" />
-    <Compile Include="Preprocessors\WordDictionaries\SpeechPart.cs" />
+    <Compile Include="WordDictionaries\SimpleDictionary.cs" />
+    <Compile Include="WordDictionaries\SpeechPart.cs" />
     <Compile Include="Tag.cs" />
     <Compile Include="Geometry\Vector.cs" />
     <Compile Include="UI\CLInterface.cs" />
-    <Compile Include="UI\IUserInterface.cs" />
     <Compile Include="Layouters\WordsLayouter.cs" />
     <Compile Include="DataSources\TextFileSource.cs" />
   </ItemGroup>

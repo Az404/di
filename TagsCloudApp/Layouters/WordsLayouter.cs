@@ -9,34 +9,30 @@ namespace TagsCloudVisualization.Layouters
     public class WordsLayouter : IWordsLayouter
     {
         private readonly IRectangleLayouter layouter;
+        private readonly FontSettings fontSettings;
 
-        public WordsLayouter(IRectangleLayouter layouter)
+        public WordsLayouter(IRectangleLayouter layouter, FontSettings fontSettings)
         {
             this.layouter = layouter;
+            this.fontSettings = fontSettings;
         }
 
-        public IEnumerable<Tag> PutWords(IEnumerable<string> words, FontSettings fontSettings)
+        public ITags PutWords(IEnumerable<MeasuredWord> measuredWords)
         {
-            var wordsArray = words as string[] ?? words.ToArray();
-            var stats = GetWordStats(wordsArray);
-            var maxCount = stats.Max(kv => kv.Value);
-            return wordsArray.Select(word =>
+            var wordsArray = measuredWords as MeasuredWord[] ?? measuredWords.ToArray();
+            var maxWeight = wordsArray.Max(w => w.Weight);
+            return new Tags(wordsArray.Select(word =>
             {
-                var font = new Font(fontSettings.FontFamily, CalcFontSize(fontSettings, stats, maxCount, word));
-                var size = TextRenderer.MeasureText(word, font);
+                var font = new Font(fontSettings.FontFamily, CalcFontSize(word.Weight, maxWeight, fontSettings));
+                var size = TextRenderer.MeasureText(word.Value, font);
                 var rect = layouter.PutNextRectangle(size);
-                return new Tag(rect, word, font);
-            });
+                return new Tag(rect, word.Value, font);
+            }));
         }
 
-        private static int CalcFontSize(FontSettings fontSettings, Dictionary<string, int> wordStats, int maxCount, string word)
+        private static int CalcFontSize(int weight, int maxWeight, FontSettings fontSettings)
         {
-            return fontSettings.MinSize + (fontSettings.MaxSize - fontSettings.MinSize)*(wordStats[word]/maxCount);
-        }
-
-        private static Dictionary<string, int> GetWordStats(IEnumerable<string> words)
-        {
-            return words.GroupBy(word => word).ToDictionary(group => group.Key, group => group.Count());
+            return fontSettings.MinSize + (fontSettings.MaxSize - fontSettings.MinSize)*(weight/maxWeight);
         }
     }
 }

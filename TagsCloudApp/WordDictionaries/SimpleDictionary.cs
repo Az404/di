@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TagsCloudVisualization.Preprocessors.WordDictionaries
+namespace TagsCloudVisualization.WordDictionaries
 {
     public class SimpleDictionary : IWordDictionary
     {
