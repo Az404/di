@@ -1,11 +1,11 @@
 ﻿namespace TagsCloudVisualization.UI
 {
-    public class ClInterface : IUserInterface
+    public class ClInterface
     {
-        private readonly IClient client;
+        private readonly IOutputDrawer client;
         private readonly string outputFileName;
 
-        public ClInterface(AppOptions options, IClient client)
+        public ClInterface(AppOptions options, IOutputDrawer client)
         {
             this.client = client;
             outputFileName = options.ImageFileName;

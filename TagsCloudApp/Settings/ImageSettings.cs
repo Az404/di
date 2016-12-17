@@ -5,17 +5,16 @@ namespace TagsCloudVisualization.Settings
 {
     public class ImageSettings
     {
-
-        public ImageSettings(ImageFormat imageFormat, Palette palette, Size imageSize)
+        public ImageSettings(Palette palette)
         {
-            ImageFormat = imageFormat;
             Palette = palette;
-            ImageSize = imageSize;
         }
 
-        public ImageFormat ImageFormat { get; }
-        public Palette Palette { get; }
-        public Size ImageSize { get; set; }
+        public ImageFormat ImageFormat { get; set; } = ImageFormat.Png;
+        public Palette Palette { get; set; }
+        public int Width { get; set; } = 2000;
+        public int Height { get; set; } = 1000;
         public int BorderSize { get; } = 10;
+        public Point Center => new Point(Width / 2, Height / 2);
     }
 }

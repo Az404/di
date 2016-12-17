@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
@@ -15,34 +14,55 @@ namespace TagsCloudVisualization
 {
     internal class Program
     {
-        // CR: Should not be part of the program class
-        private const int Width = 2000;
-        private const int Height = 1000;
-        // CR: Same
-        private static readonly Point Center = new Point(Width / 2, Height / 2);
+        private static readonly string Usage = $"Usage: {AppDomain.CurrentDomain.FriendlyName} [ -h | -help ] -t tags-file -i image-file";
 
         private static void Main(string[] args)
         {
-            var appOptions = ProcessArgs(args);
-            var assembly = Assembly.GetAssembly(typeof(Program));
+            var appOptions = ProcessArgs(BuildCommandLineParser(), args);
+            
+            var container = BuildContainer(appOptions);
 
-            // CR: At least wrap in function
-            var builder = new ContainerBuilder();
-            builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces();
-            builder.RegisterInstance(appOptions).AsSelf();
-            builder.RegisterInstance(new Palette(Color.Green, Color.LightGreen));
-            var imageSize = new Size(Width, Height);
-            builder.Register(c => new ImageSettings(ImageFormat.Png, c.Resolve<Palette>(), imageSize));
-            builder.RegisterInstance(new FontSettings());
-            builder.RegisterInstance(new TextFileSource(appOptions.TagsFileName)).As<IDataSource>();
-            builder.RegisterInstance(new CircularCloudLayouter(Center)).As<IRectangleLayouter>();
-            var container = builder.Build();
-
-            container.Resolve<IUserInterface>().Run();
+            container.Resolve<ClInterface>().Run();
         }
 
-        // CR: This function build parser AND executes it, bad pattern
-        private static AppOptions ProcessArgs(string[] args)
+        private static IContainer BuildContainer(AppOptions appOptions)
+        {
+            var currentAssembly = Assembly.GetAssembly(typeof(Program));
+
+            var builder = new ContainerBuilder();
+            builder.RegisterAssemblyTypes(currentAssembly).AsImplementedInterfaces().AsSelf();
+            builder.RegisterInstance(appOptions).AsSelf();
+            builder.RegisterInstance(new Palette(Color.Green, Color.LightGreen));
+            builder.Register(c => new ImageSettings(c.Resolve<Palette>()));
+            builder.RegisterInstance(new FontSettings());
+            builder.RegisterInstance(new TextFileSource(appOptions.TagsFileName)).As<IDataSource>();
+            builder.Register(c => new CircularCloudLayouter(c.Resolve<ImageSettings>().Center)).As<IRectangleLayouter>();
+            return builder.Build();
+        }
+        
+        private static AppOptions ProcessArgs(IFluentCommandLineParser<AppOptions> parser, string[] args)
+        {
+            var result = parser.Parse(args);
+
+            var exit = result.HelpCalled;
+            if (result.HasErrors)
+            {
+                Console.WriteLine(Usage);
+                exit = true;
+            }
+            if (!File.Exists(parser.Object.TagsFileName))
+            {
+                Console.WriteLine("File not found");
+                exit = true;
+            }
+
+            if (exit)
+                Application.Exit();
+
+            return parser.Object;
+        }
+
+        private static FluentCommandLineParser<AppOptions> BuildCommandLineParser()
         {
             var commandLineParser = new FluentCommandLineParser<AppOptions>();
 
@@ -58,34 +78,11 @@ namespace TagsCloudVisualization
                 .Required()
                 .WithDescription("Path to output image");
 
-            // CR: This can be extracted to a field
-            var usage = $"Usage: {AppDomain.CurrentDomain.FriendlyName} [ -h | -help ] -t tags-file -i image-file";
-
             commandLineParser
                 .SetupHelp("h", "help")
-                .WithHeader(usage)
+                .WithHeader(Usage)
                 .Callback(text => Console.WriteLine(text));
-
-            var result = commandLineParser.Parse(args);
-
-            var exit = result.HelpCalled;
-
-            if (result.HasErrors)
-            {
-                Console.WriteLine(usage);
-                exit = true;
-            }
-
-            if (!File.Exists(commandLineParser.Object.TagsFileName))
-            {
-                Console.WriteLine("File not found");
-                exit = true;
-            }
-
-            if (exit)
-                Application.Exit();
-
-            return commandLineParser.Object;
+            return commandLineParser;
         }
     }
 }

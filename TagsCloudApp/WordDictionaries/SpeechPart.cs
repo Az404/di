@@ -1,4 +1,4 @@
-﻿namespace TagsCloudVisualization.Preprocessors.WordDictionaries
+﻿namespace TagsCloudVisualization.WordDictionaries
 {
     public enum SpeechPart
     {

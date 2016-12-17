@@ -8,9 +8,8 @@ namespace TagsCloudVisualization.Layouters
 {
     public class CircularCloudLayouter : IRectangleLayouter
     {
-        // CR: Consts - not configurable
-        private const double AngleStep = Math.PI/32;
-        private const double CompactionTolerance = 1;
+        public double AngleStep { get; set; } = Math.PI/32;
+        public double CompactionTolerance { get; set; } = 1;
 
         private Point center;
         private readonly List<Rectangle> rectangles = new List<Rectangle>();

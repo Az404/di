@@ -7,8 +7,10 @@ using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using TagsCloudVisualization.Geometry;
 using TagsCloudVisualization.Layouters;
+using TagsCloudVisualization.Renderers;
+using TagsCloudVisualization.Settings;
 
-namespace TagsCloudVisualizationTests
+namespace TagsCloudVisualizationTests.Layouters
 {
     [TestFixture]
     internal class CircularCloudLayouter_Should
@@ -26,20 +28,21 @@ namespace TagsCloudVisualizationTests
         [TearDown]
         public void TearDown()
         {
-            // Nit: Follow resharper advice
-            if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Failed)
+            if (TestContext.CurrentContext.Result.Outcome.Status != TestStatus.Failed) return;
+            var filename =
+                $"{TestContext.CurrentContext.TestDirectory}\\{TestContext.CurrentContext.Test.FullName}.png";
+            var rectangles = layouter.Rectangles.ToArray();
+            var size = rectangles.GetBoundingRectangleSize();
+            var offset = new Size(size.Width / 2, size.Height / 2);
+            var shiftedRectangles = rectangles.Select(rect => rect.Shift(offset)).ToArray();
+            var settings = new ImageSettings(new Palette(Color.Red, Color.Red))
             {
-                var filename =
-                    $"{TestContext.CurrentContext.TestDirectory}\\{TestContext.CurrentContext.Test.FullName}.png";
-                var rectangles = layouter.Rectangles.ToArray();
-                var size = rectangles.GetBoundingRectangleSize();
-                var offset = new Size(size.Width / 2, size.Height / 2);
-                var shiftedRectangles = rectangles.Select(rect => rect.Shift(offset)).ToArray();
-                // CR: Wtf, it doesn't compile
-                //using (var bitmap = CloudVizualizer.DrawRectangles(shiftedRectangles, size, Color.Red))
-                //    bitmap.Save(filename);
-                TestContext.WriteLine($"Tag cloud visualization saved to file {filename}");
-            }
+                Width = size.Width,
+                Height = size.Height
+            };
+            using (var bitmap = new RectanglesRenderer(settings).Render(shiftedRectangles))
+                bitmap.Save(filename);
+            TestContext.WriteLine($"Tag cloud visualization saved to file {filename}");
         }
 
         [Test]
