@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace TagsCloudVisualization.Measurers
 {
+    // CR: WordCounter but IWordsMeasurer
     public class WordCounter : IWordsMeasurer
     {
         public IEnumerable<MeasuredWord> MeasureWords(IEnumerable<string> words)

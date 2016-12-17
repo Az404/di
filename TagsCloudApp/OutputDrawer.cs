@@ -18,6 +18,9 @@ namespace TagsCloudVisualization
         {
             this.layouter = layouter;
             this.renderer = renderer;
+            // CR: Can be extract to an interface with injected dependencies
+            // Bascially from the renderer perspective you only care about measured words
+            // + don't extract words in the constructor
             words = PrepareWords(source, preprocessors, wordsMeasurer);
         }
 
