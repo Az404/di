@@ -3,8 +3,8 @@ using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
-using TagsCloudVisualization;
 using TagsCloudVisualization.Layouters;
+using TagsCloudVisualization.Measurers;
 using TagsCloudVisualization.Settings;
 
 namespace TagsCloudVisualizationTests.Layouters
@@ -26,7 +26,7 @@ namespace TagsCloudVisualizationTests.Layouters
         public void UseRectangleLayouter_ForPuttingWords()
         {
             var words = new[] {new MeasuredWord("a", 5), new MeasuredWord("b", 1), new MeasuredWord("c", 3)};
-            layouter.PutWords(words);
+            layouter.CreateCloud(words);
             A.CallTo(() => rectLayouter.PutNextRectangle(A<Size>.Ignored))
                 .MustHaveHappened(Repeated.Exactly.Times(words.Length));
         }
@@ -38,7 +38,7 @@ namespace TagsCloudVisualizationTests.Layouters
             {
                 new MeasuredWord("a", 3), new MeasuredWord("b", 7), new MeasuredWord("c", 4), new MeasuredWord("d", 1)
             };
-            var tags = layouter.PutWords(words).ToArray();
+            var tags = layouter.CreateCloud(words).Tags;
             tags.OrderBy(t => t.Font.Size)
                 .Select(t => t.Word)
                 .Should()

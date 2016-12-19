@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using TagsCloudVisualization.Measurers;
+using TagsCloudVisualization.Tags;
 
 namespace TagsCloudVisualization.Layouters
 {
     public interface IWordsLayouter
     {
-        ITags PutWords(IEnumerable<MeasuredWord> words);
+        ITagsCloud CreateCloud(IEnumerable<MeasuredWord> words);
     }
 }

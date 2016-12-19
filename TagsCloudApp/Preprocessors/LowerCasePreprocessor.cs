@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace TagsCloudVisualization.Preprocessors
 {
-    public class LowerCasePreprocessor : IWordPreprocessor
+    public class LowerCasePreprocessor : IWordsPreprocessor
     {
         public IEnumerable<string> ProcessWords(IEnumerable<string> words)
         {

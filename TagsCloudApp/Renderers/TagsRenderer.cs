@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Text;
 using TagsCloudVisualization.Settings;
+using TagsCloudVisualization.Tags;
 
 namespace TagsCloudVisualization.Renderers
 {
@@ -13,13 +14,13 @@ namespace TagsCloudVisualization.Renderers
             Settings = settings;
         }
 
-        public Bitmap Render(ITags tags)
+        public Bitmap Render(ITagsCloud cloud)
         {
             var bitmap = new Bitmap(Settings.Width, Settings.Height);
             using (var graphics = Graphics.FromImage(bitmap))
             {
                 graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
-                foreach (var tag in tags)
+                foreach (var tag in cloud.Tags)
                 {
                     graphics.DrawRectangle(new Pen(Settings.Palette.SecondaryColor), tag.Rectangle);
                     var boundingRect = new Rectangle(tag.Rectangle.Location,

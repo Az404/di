@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
-using TagsCloudVisualization;
 using TagsCloudVisualization.Measurers;
 
 namespace TagsCloudVisualizationTests.Measurers
@@ -11,8 +10,8 @@ namespace TagsCloudVisualizationTests.Measurers
         [Test]
         public void Count_WordStats()
         {
-            var wordCounter = new WordCounter();
-            wordCounter.MeasureWords(new[] {"a", "b", "c", "b", "c", "b"})
+            var wordsCounter = new WordsCounter();
+            wordsCounter.MeasureWords(new[] {"a", "b", "c", "b", "c", "b"})
                 .Should()
                 .BeEquivalentTo(new MeasuredWord("a", 1), new MeasuredWord("b", 3), new MeasuredWord("c", 2));
         }

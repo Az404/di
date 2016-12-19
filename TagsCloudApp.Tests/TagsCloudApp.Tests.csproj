@@ -70,7 +70,7 @@
     <Compile Include="Geometry\Rectangle_Should.cs" />
     <Compile Include="Geometry\Vector_Should.cs" />
     <Compile Include="Measurers\Counter_Should.cs" />
-    <Compile Include="OutputDrawer_Should.cs" />
+    <Compile Include="Preparers\WordsPreparer_Should.cs" />
     <Compile Include="Preprocessors\WordPartsFilter_Should.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Layouters\WordsLayouter_Should.cs" />
@@ -84,6 +84,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

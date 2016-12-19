@@ -1,8 +1,9 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
+using TagsCloudVisualization.Preprocessors;
 using TagsCloudVisualization.WordDictionaries;
 
-namespace TagsCloudVisualization.Preprocessors
+namespace TagsCloudVisualizationTests.Preprocessors
 {
     [TestFixture]
     public class WordPartsFilter_Should

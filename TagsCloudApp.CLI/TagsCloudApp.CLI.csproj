@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F9A71B45-9DA3-464A-B8E2-779C656F5251}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{84D4D0A8-3FD3-4939-98C4-71ADD823B031}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TagsCloudVisualization</RootNamespace>
-    <AssemblyName>TagsCloudVisualization</AssemblyName>
+    <RootNamespace>TagsCloudApp.CLI</RootNamespace>
+    <AssemblyName>TagsCloudApp.CLI</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -32,51 +32,39 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.2.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.2.1\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentCommandLineParser, Version=1.4.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentCommandLineParser.1.4.3\lib\net35\FluentCommandLineParser.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tags\ITagsCloud.cs" />
-    <Compile Include="Measurers\WordsCounter.cs" />
-    <Compile Include="Measurers\IWordsMeasurer.cs" />
-    <Compile Include="Tags\TagsCloud.cs" />
-    <Compile Include="TagsCloudVisualiser.cs" />
-    <Compile Include="Preparers\IWordsPreparer.cs" />
-    <Compile Include="Preparers\WordsPreparer.cs" />
-    <Compile Include="Renderers\RectanglesRenderer.cs" />
-    <Compile Include="Settings\FontSettings.cs" />
-    <Compile Include="IVisualiser.cs" />
-    <Compile Include="Renderers\TagsRenderer.cs" />
-    <Compile Include="Layouters\IWordsLayouter.cs" />
-    <Compile Include="Preprocessors\WordPartsFilter.cs" />
-    <Compile Include="Layouters\CircularCloudLayouter.cs" />
-    <Compile Include="Geometry\PointExtensions.cs" />
-    <Compile Include="Layouters\IRectangleLayouter.cs" />
-    <Compile Include="DataSources\IDataSource.cs" />
-    <Compile Include="Renderers\IImageRenderer.cs" />
-    <Compile Include="Settings\ImageSettings.cs" />
-    <Compile Include="Preprocessors\IWordsPreprocessor.cs" />
-    <Compile Include="Settings\Palette.cs" />
-    <Compile Include="Measurers\MeasuredWord.cs" />
-    <Compile Include="WordDictionaries\IWordDictionary.cs" />
-    <Compile Include="Preprocessors\LowerCasePreprocessor.cs" />
+    <Compile Include="AppOptions.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Geometry\RectangleExtensions.cs" />
-    <Compile Include="WordDictionaries\SimpleDictionary.cs" />
-    <Compile Include="WordDictionaries\SpeechPart.cs" />
-    <Compile Include="Tags\Tag.cs" />
-    <Compile Include="Geometry\Vector.cs" />
-    <Compile Include="Layouters\WordsLayouter.cs" />
-    <Compile Include="DataSources\TextFileSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TagsCloudApp\TagsCloudApp.csproj">
+      <Project>{f9a71b45-9da3-464a-b8e2-779c656f5251}</Project>
+      <Name>TagsCloudApp</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="tags.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

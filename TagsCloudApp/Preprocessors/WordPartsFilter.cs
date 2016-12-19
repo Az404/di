@@ -4,7 +4,7 @@ using TagsCloudVisualization.WordDictionaries;
 
 namespace TagsCloudVisualization.Preprocessors
 {
-    public class WordPartsFilter : IWordPreprocessor
+    public class WordPartsFilter : IWordsPreprocessor
     {
         public SpeechPart[] FilteredSpeechParts { get; set; }= {SpeechPart.Preposition, SpeechPart.Pronoun};
 
