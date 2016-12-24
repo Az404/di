@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using ResultOf;
 using TagsCloudVisualization.Layouters;
 using TagsCloudVisualization.Preparers;
 using TagsCloudVisualization.Renderers;

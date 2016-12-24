@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
-using ResultOf;
 using TagsCloudVisualization.Settings;
 using TagsCloudVisualization.Tags;
 
