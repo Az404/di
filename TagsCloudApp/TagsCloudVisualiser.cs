@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using ResultOf;
 using TagsCloudVisualization.Layouters;
 using TagsCloudVisualization.Preparers;
 using TagsCloudVisualization.Renderers;
@@ -18,11 +19,11 @@ namespace TagsCloudVisualization
             this.renderer = renderer;
         }
 
-        public Bitmap DrawImage()
+        public Result<Bitmap> DrawImage()
         {
-            var measuredWords = preparer.GetPreparedWords();
-            var tagCloud = layouter.CreateCloud(measuredWords);
-            return renderer.Render(tagCloud);
+            return preparer.GetPreparedWords()
+                .Then(measuredWords => layouter.CreateCloud(measuredWords))
+                .Then(tagsCloud => renderer.Render(tagsCloud));
         }
     }
 }

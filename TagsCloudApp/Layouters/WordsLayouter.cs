@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using ResultOf;
 using TagsCloudVisualization.Measurers;
 using TagsCloudVisualization.Settings;
 using TagsCloudVisualization.Tags;
@@ -19,10 +20,10 @@ namespace TagsCloudVisualization.Layouters
             this.fontSettings = fontSettings;
         }
 
-        public ITagsCloud CreateCloud(IEnumerable<MeasuredWord> measuredWords)
+        public Result<ITagsCloud> CreateCloud(IEnumerable<MeasuredWord> measuredWords)
         {
             var wordsArray = measuredWords as MeasuredWord[] ?? measuredWords.ToArray();
-            var maxWeight = wordsArray.Max(w => w.Weight);
+            var maxWeight = wordsArray.Length > 0 ? wordsArray.Max(w => w.Weight) : 1;
             return new TagsCloud(wordsArray.Select(word =>
             {
                 var font = new Font(fontSettings.FontFamily, CalcFontSize(word.Weight, maxWeight, fontSettings));

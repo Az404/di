@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using ResultOf;
 using TagsCloudVisualization.Measurers;
 
 namespace TagsCloudVisualization.Preparers
 {
     public interface IWordsPreparer
     {
-        IEnumerable<MeasuredWord> GetPreparedWords();
+        Result<IEnumerable<MeasuredWord>> GetPreparedWords();
     }
 }

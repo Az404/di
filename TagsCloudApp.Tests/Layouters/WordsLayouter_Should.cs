@@ -38,7 +38,7 @@ namespace TagsCloudVisualizationTests.Layouters
             {
                 new MeasuredWord("a", 3), new MeasuredWord("b", 7), new MeasuredWord("c", 4), new MeasuredWord("d", 1)
             };
-            var tags = layouter.CreateCloud(words).Tags;
+            var tags = layouter.CreateCloud(words).GetValueOrThrow().Tags;
             tags.OrderBy(t => t.Font.Size)
                 .Select(t => t.Word)
                 .Should()

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
 using System.Reflection;
-using System.Windows.Forms;
 using Autofac;
 using Fclp;
+using ResultOf;
 using TagsCloudVisualization;
 using TagsCloudVisualization.DataSources;
 using TagsCloudVisualization.Layouters;
@@ -24,10 +23,13 @@ namespace TagsCloudApp.CLI
 
             var visualiser = container.Resolve<IVisualiser>();
 
-            using (var bitmap = visualiser.DrawImage())
-            {
-                bitmap.Save(appOptions.ImageFileName);
-            }
+            visualiser.DrawImage()
+                .Then(bitmap =>
+                {
+                    using (bitmap)
+                        bitmap.Save(appOptions.ImageFileName);
+                })
+                .OnFail(Console.WriteLine);
         }
 
         private static IContainer BuildContainer(AppOptions appOptions)
@@ -47,22 +49,12 @@ namespace TagsCloudApp.CLI
         {
             var result = parser.Parse(args);
 
-            var exit = result.HelpCalled;
-            if (result.HasErrors)
-            {
-                Console.WriteLine(Usage);
-                exit = true;
-            }
-            if (!File.Exists(parser.Object.TagsFileName))
-            {
-                Console.WriteLine("File not found");
-                exit = true;
-            }
+            if (!result.HelpCalled && !result.HasErrors)
+                return parser.Object;
 
-            if (exit)
-                Application.Exit();
-
-            return parser.Object;
+            Console.WriteLine(Usage);
+            Environment.Exit(1);
+            return null;
         }
 
         private static FluentCommandLineParser<AppOptions> BuildCommandLineParser()

@@ -1,10 +1,11 @@
 ﻿using System.Drawing;
+using ResultOf;
 using TagsCloudVisualization.Tags;
 
 namespace TagsCloudVisualization.Renderers
 {
     public interface IImageRenderer
     {
-        Bitmap Render(ITagsCloud cloud);
+        Result<Bitmap> Render(ITagsCloud cloud);
     }
 }

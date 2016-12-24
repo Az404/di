@@ -1,5 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Text;
+using System.Linq;
+using ResultOf;
 using TagsCloudVisualization.Settings;
 using TagsCloudVisualization.Tags;
 
@@ -14,7 +16,14 @@ namespace TagsCloudVisualization.Renderers
             Settings = settings;
         }
 
-        public Bitmap Render(ITagsCloud cloud)
+        public Result<Bitmap> Render(ITagsCloud cloud)
+        {
+            return cloud.Validate(IsCloudFitsInImage, "Cloud is larger than image")
+                .Then(DoRender)
+                .RefineError("Can't render image");
+        }
+
+        public Bitmap DoRender(ITagsCloud cloud)
         {
             var bitmap = new Bitmap(Settings.Width, Settings.Height);
             using (var graphics = Graphics.FromImage(bitmap))
@@ -29,6 +38,17 @@ namespace TagsCloudVisualization.Renderers
                 }
             }
             return bitmap;
+        }
+
+        public bool IsCloudFitsInImage(ITagsCloud cloud)
+        {
+            if (cloud.Tags.Length == 0)
+                return true;
+            var minX = cloud.Tags.Min(tag => tag.Rectangle.Left);
+            var minY = cloud.Tags.Min(tag => tag.Rectangle.Top);
+            var maxX = cloud.Tags.Max(tag => tag.Rectangle.Right);
+            var maxY = cloud.Tags.Max(tag => tag.Rectangle.Bottom);
+            return minX >= 0 && minY >= 0 && maxX <= Settings.Width && maxY <= Settings.Height;
         }
     }
 }

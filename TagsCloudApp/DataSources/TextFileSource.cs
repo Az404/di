@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using ResultOf;
 
 namespace TagsCloudVisualization.DataSources
 {
@@ -12,9 +13,10 @@ namespace TagsCloudVisualization.DataSources
             this.fileName = fileName;
         }
 
-        public IEnumerable<string> GetWords()
+        public Result<IEnumerable<string>> GetWords()
         {
-            return File.ReadLines(fileName);
+            return Result.Of(() => File.ReadLines(fileName))
+                .RefineError("Can't read words from text file");
         }
     }
 }

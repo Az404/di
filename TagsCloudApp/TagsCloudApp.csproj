@@ -42,6 +42,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Result.cs" />
     <Compile Include="Tags\ITagsCloud.cs" />
     <Compile Include="Measurers\WordsCounter.cs" />
     <Compile Include="Measurers\IWordsMeasurer.cs" />

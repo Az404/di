@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ResultOf;
 using TagsCloudVisualization.DataSources;
 using TagsCloudVisualization.Measurers;
 using TagsCloudVisualization.Preprocessors;
@@ -18,14 +19,14 @@ namespace TagsCloudVisualization.Preparers
             this.wordsMeasurer = wordsMeasurer;
         }
 
-        public IEnumerable<MeasuredWord> GetPreparedWords()
+        public Result<IEnumerable<MeasuredWord>> GetPreparedWords()
         {
-            var words = source.GetWords();
+            var result = source.GetWords();
             foreach (var wordPreprocessor in preprocessors)
             {
-                words = wordPreprocessor.ProcessWords(words);
+                result = result.Then(words => wordPreprocessor.ProcessWords(words));
             }
-            return wordsMeasurer.MeasureWords(words);
+            return result.Then(words => wordsMeasurer.MeasureWords(words));
         }
     }
 }

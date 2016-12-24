@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace TagsCloudVisualization.WordDictionaries
 {
@@ -26,7 +27,9 @@ namespace TagsCloudVisualization.WordDictionaries
 
         public IEnumerable<string> GetWords(SpeechPart speechPart)
         {
-            return dictionary[speechPart];
+            return dictionary.ContainsKey(speechPart)
+                ? dictionary[speechPart]
+                : Enumerable.Empty<string>();
         }
     }
 }

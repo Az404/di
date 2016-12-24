@@ -1,9 +1,10 @@
 ﻿using System.Drawing;
+using ResultOf;
 
 namespace TagsCloudVisualization
 {
     public interface IVisualiser
     {
-        Bitmap DrawImage();
+        Result<Bitmap> DrawImage();
     }
 }
