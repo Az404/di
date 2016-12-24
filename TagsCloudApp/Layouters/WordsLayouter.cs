@@ -11,6 +11,9 @@ namespace TagsCloudVisualization.Layouters
 {
     public class WordsLayouter : IWordsLayouter
     {
+        // CR: IRectangleLayouter is stateful => one-time object
+        // Better replace with IRectangleLayouterFactory and
+        // create for each CreateCloud call
         private readonly IRectangleLayouter layouter;
         private readonly FontSettings fontSettings;
 
@@ -22,8 +25,10 @@ namespace TagsCloudVisualization.Layouters
 
         public Result<ITagsCloud> CreateCloud(IEnumerable<MeasuredWord> measuredWords)
         {
+            // To avoid doing this, you can encapsulate normalized weight into MeasuredWord
             var wordsArray = measuredWords as MeasuredWord[] ?? measuredWords.ToArray();
             var maxWeight = wordsArray.Length > 0 ? wordsArray.Max(w => w.Weight) : 1;
+            // CR: I can imagine failures in IRectangleLayouter
             return new TagsCloud(wordsArray.Select(word =>
             {
                 var font = new Font(fontSettings.FontFamily, CalcFontSize(word.Weight, maxWeight, fontSettings));
