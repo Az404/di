@@ -69,10 +69,10 @@ namespace TagsCloudVisualizationTests.Preparers
         [Test]
         public void ReturnMeasuredWords()
         {
-            var measuredWords = new[] {new MeasuredWord("a", 1), new MeasuredWord("b", 2)};
+            var measuredWords = new[] {new MeasuredWord("a", 1), new MeasuredWord("b", 0.2)};
             A.CallTo(() => wordsMeasurer.MeasureWords(A<IEnumerable<string>>.Ignored)).Returns(measuredWords);
 
-            preparer.GetPreparedWords().ShouldBeEquivalentTo(measuredWords);
+            preparer.GetPreparedWords().GetValueOrThrow().ShouldBeEquivalentTo(measuredWords);
         }
     }
 }

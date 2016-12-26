@@ -11,9 +11,10 @@ namespace TagsCloudVisualizationTests.Measurers
         public void Count_WordStats()
         {
             var wordsCounter = new WordsCounter();
-            wordsCounter.MeasureWords(new[] {"a", "b", "c", "b", "c", "b"})
+            wordsCounter.MeasureWords(new[] {"a", "b", "c", "b", "b", "b"})
+                .GetValueOrThrow()
                 .Should()
-                .BeEquivalentTo(new MeasuredWord("a", 1), new MeasuredWord("b", 3), new MeasuredWord("c", 2));
+                .BeEquivalentTo(new MeasuredWord("a", 0.25), new MeasuredWord("b", 1), new MeasuredWord("c", 0.25));
         }
     }
 }

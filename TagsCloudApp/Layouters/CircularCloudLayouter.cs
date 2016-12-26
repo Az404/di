@@ -21,7 +21,7 @@ namespace TagsCloudVisualization.Layouters
             this.center = center;
         }
 
-        public Rectangle PutNextRectangle(Size rectangleSize)
+        public Result<Rectangle> PutNextRectangle(Size rectangleSize)
         {
             var candidates = new List<Rectangle>();
             for (var angle = 0.0; angle < 2*Math.PI; angle += AngleStep)

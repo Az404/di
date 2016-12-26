@@ -4,6 +4,6 @@ namespace TagsCloudVisualization.Measurers
 {
     public interface IWordsMeasurer
     {
-        IEnumerable<MeasuredWord> MeasureWords(IEnumerable<string> words);
+        Result<IEnumerable<MeasuredWord>> MeasureWords(IEnumerable<string> words);
     }
 }

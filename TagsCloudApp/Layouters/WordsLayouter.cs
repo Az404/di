@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
-using ResultOf;
 using TagsCloudVisualization.Measurers;
 using TagsCloudVisualization.Settings;
 using TagsCloudVisualization.Tags;
@@ -11,31 +10,36 @@ namespace TagsCloudVisualization.Layouters
 {
     public class WordsLayouter : IWordsLayouter
     {
-        private readonly IRectangleLayouter layouter;
+        private readonly Func<IRectangleLayouter> layouterFactory;
         private readonly FontSettings fontSettings;
 
-        public WordsLayouter(IRectangleLayouter layouter, FontSettings fontSettings)
+        public WordsLayouter(Func<IRectangleLayouter> layouterFactory, FontSettings fontSettings)
         {
-            this.layouter = layouter;
+            this.layouterFactory = layouterFactory;
             this.fontSettings = fontSettings;
         }
 
         public Result<ITagsCloud> CreateCloud(IEnumerable<MeasuredWord> measuredWords)
         {
-            var wordsArray = measuredWords as MeasuredWord[] ?? measuredWords.ToArray();
-            var maxWeight = wordsArray.Length > 0 ? wordsArray.Max(w => w.Weight) : 1;
-            return new TagsCloud(wordsArray.Select(word =>
+            var layouter = layouterFactory();
+            var tags = new List<Tag>();
+            foreach (var measuredWord in measuredWords)
             {
-                var font = new Font(fontSettings.FontFamily, CalcFontSize(word.Weight, maxWeight, fontSettings));
-                var size = TextRenderer.MeasureText(word.Value, font);
-                var rect = layouter.PutNextRectangle(size);
-                return new Tag(rect, word.Value, font);
-            }));
+                var font = new Font(fontSettings.FontFamily, CalcFontSize(measuredWord.Weight));
+                var size = TextRenderer.MeasureText(measuredWord.Value, font);
+                var rectResult = layouter.PutNextRectangle(size);
+                if (!rectResult.IsSuccess)
+                    return rectResult
+                        .TranslateFail<Rectangle, ITagsCloud>()
+                        .RefineError($"Can't put bounding rectangle for '{measuredWord.Value}'");
+                tags.Add(new Tag(rectResult.Value, measuredWord.Value, font));
+            }
+            return new TagsCloud(tags);
         }
 
-        private static int CalcFontSize(int weight, int maxWeight, FontSettings fontSettings)
+        private int CalcFontSize(double weight)
         {
-            return fontSettings.MinSize + (fontSettings.MaxSize - fontSettings.MinSize)*(weight/maxWeight);
+            return (int)(fontSettings.MinSize + (fontSettings.MaxSize - fontSettings.MinSize) * weight);
         }
     }
 }

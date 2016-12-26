@@ -19,13 +19,13 @@ namespace TagsCloudVisualizationTests.Layouters
         public void SetUp()
         {
             rectLayouter = A.Fake<IRectangleLayouter>();
-            layouter = new WordsLayouter(rectLayouter, new FontSettings());
+            layouter = new WordsLayouter(() => rectLayouter, new FontSettings());
         }
 
         [Test]
         public void UseRectangleLayouter_ForPuttingWords()
         {
-            var words = new[] {new MeasuredWord("a", 5), new MeasuredWord("b", 1), new MeasuredWord("c", 3)};
+            var words = new[] {new MeasuredWord("a", 0.5), new MeasuredWord("b", 1), new MeasuredWord("c", 0.3)};
             layouter.CreateCloud(words);
             A.CallTo(() => rectLayouter.PutNextRectangle(A<Size>.Ignored))
                 .MustHaveHappened(Repeated.Exactly.Times(words.Length));
@@ -36,7 +36,7 @@ namespace TagsCloudVisualizationTests.Layouters
         {
             var words = new[]
             {
-                new MeasuredWord("a", 3), new MeasuredWord("b", 7), new MeasuredWord("c", 4), new MeasuredWord("d", 1)
+                new MeasuredWord("a", 0.3), new MeasuredWord("b", 0.7), new MeasuredWord("c", 0.4), new MeasuredWord("d", 1)
             };
             var tags = layouter.CreateCloud(words).GetValueOrThrow().Tags;
             tags.OrderBy(t => t.Font.Size)

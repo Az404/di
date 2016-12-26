@@ -48,14 +48,14 @@ namespace TagsCloudVisualizationTests.Layouters
         [Test]
         public void PutPointRectangle_InCenter()
         {
-            var result = layouter.PutNextRectangle(new Size(0, 0));
+            var result = layouter.PutNextRectangle(new Size(0, 0)).GetValueOrThrow();
             result.Should().Be(new Rectangle(center, new Size(0, 0)));
         }
 
         [Test]
         public void PutSingleRectangle_Centered()
         {
-            var result = layouter.PutNextRectangle(new Size(10, 10));
+            var result = layouter.PutNextRectangle(new Size(10, 10)).GetValueOrThrow();
             result.Should().Be(new Rectangle(new Point(-5, -5), new Size(10, 10)));
         }
 
@@ -121,7 +121,7 @@ namespace TagsCloudVisualizationTests.Layouters
 
         private List<Rectangle> PutRectangles(params Size[] rectangleSizes)
         {
-            return rectangleSizes.Select(size => layouter.PutNextRectangle(size)).ToList();
+            return rectangleSizes.Select(size => layouter.PutNextRectangle(size).GetValueOrThrow()).ToList();
         }
     }
 }

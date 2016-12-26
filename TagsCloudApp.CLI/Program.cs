@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Reflection;
 using Autofac;
 using Fclp;
-using ResultOf;
 using TagsCloudVisualization;
 using TagsCloudVisualization.DataSources;
 using TagsCloudVisualization.Layouters;
